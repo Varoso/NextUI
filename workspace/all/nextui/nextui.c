@@ -1205,13 +1205,10 @@ static int autoResume(void) {
 
 	// putFile(LAST_PATH, FAUX_RECENT_PATH); // saveLast() will crash here because top is NULL
 
-	char act[256];
-	sprintf(act, "gametimectl.elf start '%s'", escapeSingleQuotes(sd_path));
-	system(act);
-
 	char cmd[256];
-	// dont escape sd_path again because it was already escaped for gametimectl and function modifies input str aswell
-	sprintf(cmd, "'%s' '%s'", escapeSingleQuotes(emu_path), sd_path);
+	// escapeSingleQuotes() modifies the passed string.
+	// Escape both paths now that gametimectl is no longer called.
+	sprintf(cmd, "'%s' '%s'", escapeSingleQuotes(emu_path), escapeSingleQuotes(sd_path));
 	putInt(RESUME_SLOT_PATH, AUTO_RESUME_SLOT);
 	queueNext(cmd);
 	return 1;
@@ -1319,12 +1316,10 @@ static void openRom(char* path, char* last) {
 	// so we need to save the path before we call that
 	addRecent(recent_path, recent_alias); // yiiikes
 	saveLast(last==NULL ? sd_path : last);
-	char act[256];
-	sprintf(act, "gametimectl.elf start '%s'", escapeSingleQuotes(sd_path));
-	system(act);
 	char cmd[256];
-	// dont escape sd_path again because it was already escaped for gametimectl and function modifies input str aswell
-	sprintf(cmd, "'%s' '%s'", escapeSingleQuotes(emu_path), sd_path);
+	// escapeSingleQuotes() modifies the passed string.
+	// Escape both paths before constructing the emulator command.
+	sprintf(cmd, "'%s' '%s'", escapeSingleQuotes(emu_path), escapeSingleQuotes(sd_path));
 	queueNext(cmd);
 }
 
@@ -2289,9 +2284,6 @@ int main (int argc, char *argv[]) {
 	// add a nice fade into the game switcher
 	if(currentScreen == SCREEN_GAMESWITCHER)
 		lastScreen = SCREEN_GAME;
-
-	// make sure we have no running games logged as active anymore (we might be launching back into the UI here)
-	system("gametimectl.elf stop_all");
 
 	GFX_setVsync(VSYNC_STRICT);
 	PWR_setCPUSpeed(CPU_SPEED_AUTO);
