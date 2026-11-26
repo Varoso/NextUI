@@ -38,7 +38,6 @@ RELEASE_NAME ?= $(RELEASE_BASE)-$(RELEASE_DOT)
 VENDOR_DEST := ./build/VENDOR/Tools
 PACKAGE_URL_MAPPINGS := \
 	"https://github.com/UncleJunVIP/nextui-pak-store/releases/latest/download/Pak.Store.pakz nextui.pak_store.pakz" \
-	"https://github.com/LoveRetro/nextui-updater-pak/releases/latest/download/nextui.updater.pakz nextui.updater.pakz"
 	# add more URLs as needed
 
 ###########################################################
@@ -87,14 +86,7 @@ ifneq ($(PLATFORM), desktop)
 	cp ./workspace/all/show2/build/$(PLATFORM)/show2.elf ./build/SYSTEM/$(PLATFORM)/bin/
 
 	# battery tracking
-	cp ./workspace/all/libbatmondb/build/$(PLATFORM)/libbatmondb.so ./build/SYSTEM/$(PLATFORM)/lib
 	cp ./workspace/all/batmon/build/$(PLATFORM)/batmon.elf ./build/SYSTEM/$(PLATFORM)/bin/
-	cp ./workspace/all/battery/build/$(PLATFORM)/battery.elf ./build/EXTRAS/Tools/$(PLATFORM)/Battery.pak/
-
-	# game time tracking
-	cp ./workspace/all/libgametimedb/build/$(PLATFORM)/libgametimedb.so ./build/SYSTEM/$(PLATFORM)/lib
-	cp ./workspace/all/gametimectl/build/$(PLATFORM)/gametimectl.elf ./build/SYSTEM/$(PLATFORM)/bin/
-	cp ./workspace/all/gametime/build/$(PLATFORM)/gametime.elf ./build/EXTRAS/Tools/$(PLATFORM)/Game\ Tracker.pak/
 endif
 	cp ./workspace/$(PLATFORM)/libmsettings/libmsettings.so ./build/SYSTEM/$(PLATFORM)/lib
 	cp ./workspace/all/nextui/build/$(PLATFORM)/nextui.elf ./build/SYSTEM/$(PLATFORM)/bin/
